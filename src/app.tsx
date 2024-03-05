@@ -4,7 +4,11 @@ import { io } from 'socket.io-client'
 import { ConnectComponent } from './components/ConnectComponent'
 import { SetupGameComponent } from './components/SetupGameComponent'
 
-const socket = io('http://localhost:3000', {
+const SOCKET_URL = import.meta.env.DEV
+  ? 'http://localhost:3000'
+  : 'wss://zutkwma9xk.execute-api.sa-east-1.amazonaws.com/production/'
+
+const socket = io(SOCKET_URL, {
   autoConnect: false
 })
 
@@ -30,6 +34,8 @@ export function App() {
   const [nickname, setNickname] = useState('')
   const [isSetupPhase, setIsSetupPhase] = useState(false)
   const [roomData, setRoomData] = useState({} as RoomData)
+
+  console.log(import.meta.env)
 
   useEffect(() => {
     socket.on('connect', () => {
